@@ -101,7 +101,7 @@ class RetrieveFM7Data extends RetrieveFMXML {
             
         }
         $data = '';
-        if ($this->FX->DBPassword != '' || $this->FX->DBUser != 'FX') {     // Assemble the Password Data
+        if (($this->FX->DBPassword != '' || $this->FX->DBUser != 'FX') && !defined('CURLOPT_HTTPAUTH')) {     // Assemble the Password Data
             $this->FX->userPass = rawurlencode($this->FX->DBUser) . ':' . rawurlencode($this->FX->DBPassword) . '@';
         }
         if ($this->FX->layout != '') {                                      // Set up the layout portion of the query.
@@ -177,7 +177,7 @@ and places where you will have to set flags in the order process.
                 curl_setopt($curlHandle, CURLOPT_POST, 1);
                 if ($this->FX->verifyPeer == false) curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER,false);
                 curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $this->dataURLParams);
-                if ($this->FX->DBPassword != '' || $this->FX->DBUser != 'FX') {
+                if (($this->FX->DBPassword != '' || $this->FX->DBUser != 'FX') && defined('CURLOPT_HTTPAUTH')) {
                     curl_setopt($curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
                     curl_setopt($curlHandle, CURLOPT_USERPWD, $this->FX->DBUser . ':' . $this->FX->DBPassword);
                 }
